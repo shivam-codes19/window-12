@@ -4,6 +4,7 @@ import { useContextMenu } from "./ContextMenu";
 
 export function StartMenu() {
   const { startOpen, toggleStart, openApp } = useOS();
+  const { open: openMenu } = useContextMenu();
   if (!startOpen) return null;
   return (
     <>
