@@ -22,14 +22,18 @@ interface OSState {
   windows: WindowState[];
   zCounter: number;
   startOpen: boolean;
+  refreshKey: number;
   openApp: (appId: AppId) => void;
   closeWindow: (id: string) => void;
+  closeAll: () => void;
   focusWindow: (id: string) => void;
   minimizeWindow: (id: string) => void;
+  minimizeAll: () => void;
   toggleMaximize: (id: string) => void;
   moveWindow: (id: string, x: number, y: number) => void;
   resizeWindow: (id: string, w: number, h: number) => void;
   toggleStart: (force?: boolean) => void;
+  refreshDesktop: () => void;
 }
 
 const APP_TITLES: Record<AppId, string> = {
