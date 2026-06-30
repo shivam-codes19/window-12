@@ -52,6 +52,7 @@ export const useOS = create<OSState>()(
     windows: [],
     zCounter: 10,
     startOpen: false,
+    refreshKey: 0,
 
     openApp: (appId) =>
       set((s) => {
@@ -86,6 +87,11 @@ export const useOS = create<OSState>()(
         s.windows = s.windows.filter((w) => w.id !== id);
       }),
 
+    closeAll: () =>
+      set((s) => {
+        s.windows = [];
+      }),
+
     focusWindow: (id) =>
       set((s) => {
         const w = s.windows.find((w) => w.id === id);
@@ -99,6 +105,11 @@ export const useOS = create<OSState>()(
       set((s) => {
         const w = s.windows.find((w) => w.id === id);
         if (w) w.minimized = !w.minimized;
+      }),
+
+    minimizeAll: () =>
+      set((s) => {
+        s.windows.forEach((w) => (w.minimized = true));
       }),
 
     toggleMaximize: (id) =>
