@@ -9,13 +9,15 @@ import {
   Eye,
   ArrowUpDown,
   Info,
+  LayoutGrid,
 } from "lucide-react";
-import wallpaper from "@/assets/wallpaper.jpg";
+import { getWallpaperUrl, WALLPAPERS } from "@/lib/wallpapers";
 import { useOS, APP_REGISTRY, type AppId } from "@/store/os";
 import { Window } from "./Window";
 import { Taskbar } from "./Taskbar";
 import { StartMenu } from "./StartMenu";
 import { ContextMenuProvider, useContextMenu } from "./ContextMenu";
+import { WidgetsPanel } from "./Widgets";
 import { FileExplorer } from "@/apps/FileExplorer";
 import { Notepad } from "@/apps/Notepad";
 import { Settings } from "@/apps/Settings";
