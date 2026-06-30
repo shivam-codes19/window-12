@@ -81,7 +81,19 @@ export function Taskbar() {
         ]);
       }}
     >
-      <div className="w-40" />
+      <div className="flex w-40 items-center">
+        <button
+          onClick={() => toggleWidgets()}
+          className={`flex items-center gap-2 rounded-md px-2 py-1.5 text-sm transition ${
+            widgetsOpen ? "bg-white/15" : "hover:bg-white/10"
+          }`}
+          title="Widgets (Alt+W)"
+          aria-label="Open widgets"
+        >
+          <span className="text-base">⛅</span>
+          <span className="text-xs">21°</span>
+        </button>
+      </div>
 
       <div className="flex items-center gap-1">
         <button
