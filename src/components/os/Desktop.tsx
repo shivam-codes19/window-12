@@ -110,6 +110,22 @@ function DesktopInner() {
           },
           { separator: true },
           {
+            label: "Widgets",
+            icon: <LayoutGrid className="size-4" />,
+            shortcut: "Alt+W",
+            onSelect: () => toggleWidgets(true),
+          },
+          {
+            label: "Next background",
+            icon: <ImageIcon className="size-4" />,
+            onSelect: () => {
+              const idx = WALLPAPERS.findIndex((w) => w.id === wallpaper);
+              const next = WALLPAPERS[(idx + 1) % WALLPAPERS.length];
+              setWallpaper(next.id);
+            },
+          },
+          { separator: true },
+          {
             label: "Display settings",
             icon: <Monitor className="size-4" />,
             onSelect: () => openApp("settings"),
