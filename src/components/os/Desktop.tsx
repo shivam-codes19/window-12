@@ -43,7 +43,17 @@ export function Desktop() {
 }
 
 function DesktopInner() {
-  const { windows, openApp, toggleStart, startOpen, refreshKey, refreshDesktop } = useOS();
+  const {
+    windows,
+    openApp,
+    toggleStart,
+    startOpen,
+    refreshKey,
+    refreshDesktop,
+    wallpaper,
+    setWallpaper,
+    toggleWidgets,
+  } = useOS();
   const { open: openMenu } = useContextMenu();
 
   useEffect(() => {
@@ -53,15 +63,20 @@ function DesktopInner() {
         e.preventDefault();
         refreshDesktop();
       }
+      // Win+W style shortcut: Alt+W toggles widgets
+      if (e.altKey && (e.key === "w" || e.key === "W")) {
+        e.preventDefault();
+        toggleWidgets();
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [startOpen, toggleStart, refreshDesktop]);
+  }, [startOpen, toggleStart, refreshDesktop, toggleWidgets]);
 
   return (
     <div
-      className="relative h-screen w-screen overflow-hidden bg-cover bg-center"
-      style={{ backgroundImage: `url(${wallpaper})` }}
+      className="relative h-screen w-screen overflow-hidden bg-cover bg-center transition-[background-image] duration-500"
+      style={{ backgroundImage: `url(${getWallpaperUrl(wallpaper)})` }}
       onContextMenu={(e) => {
         // Only fire for the desktop itself (not children that called stopPropagation)
         e.preventDefault();
