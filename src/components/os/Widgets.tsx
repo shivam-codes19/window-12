@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { Settings as SettingsIcon, X } from "lucide-react";
 import { useOS, WIDGET_REGISTRY, type WidgetId } from "@/store/os";
 
