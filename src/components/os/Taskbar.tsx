@@ -28,6 +28,8 @@ export function Taskbar() {
     toggleStart,
     startOpen,
     refreshDesktop,
+    toggleWidgets,
+    widgetsOpen,
   } = useOS();
   const { open: openMenu } = useContextMenu();
   // Start as null to avoid SSR/CSR hydration mismatch on locale-formatted time.
