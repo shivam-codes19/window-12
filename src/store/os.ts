@@ -22,14 +22,18 @@ interface OSState {
   windows: WindowState[];
   zCounter: number;
   startOpen: boolean;
+  refreshKey: number;
   openApp: (appId: AppId) => void;
   closeWindow: (id: string) => void;
+  closeAll: () => void;
   focusWindow: (id: string) => void;
   minimizeWindow: (id: string) => void;
+  minimizeAll: () => void;
   toggleMaximize: (id: string) => void;
   moveWindow: (id: string, x: number, y: number) => void;
   resizeWindow: (id: string, w: number, h: number) => void;
   toggleStart: (force?: boolean) => void;
+  refreshDesktop: () => void;
 }
 
 const APP_TITLES: Record<AppId, string> = {
@@ -48,6 +52,7 @@ export const useOS = create<OSState>()(
     windows: [],
     zCounter: 10,
     startOpen: false,
+    refreshKey: 0,
 
     openApp: (appId) =>
       set((s) => {
@@ -82,6 +87,11 @@ export const useOS = create<OSState>()(
         s.windows = s.windows.filter((w) => w.id !== id);
       }),
 
+    closeAll: () =>
+      set((s) => {
+        s.windows = [];
+      }),
+
     focusWindow: (id) =>
       set((s) => {
         const w = s.windows.find((w) => w.id === id);
@@ -95,6 +105,11 @@ export const useOS = create<OSState>()(
       set((s) => {
         const w = s.windows.find((w) => w.id === id);
         if (w) w.minimized = !w.minimized;
+      }),
+
+    minimizeAll: () =>
+      set((s) => {
+        s.windows.forEach((w) => (w.minimized = true));
       }),
 
     toggleMaximize: (id) =>
@@ -135,6 +150,11 @@ export const useOS = create<OSState>()(
     toggleStart: (force) =>
       set((s) => {
         s.startOpen = force ?? !s.startOpen;
+      }),
+
+    refreshDesktop: () =>
+      set((s) => {
+        s.refreshKey += 1;
       }),
   })),
 );

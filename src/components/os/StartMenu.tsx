@@ -1,8 +1,10 @@
-import { Search, Power } from "lucide-react";
+import { Search, Power, Pin, ExternalLink } from "lucide-react";
 import { APP_REGISTRY, useOS } from "@/store/os";
+import { useContextMenu } from "./ContextMenu";
 
 export function StartMenu() {
   const { startOpen, toggleStart, openApp } = useOS();
+  const { open: openMenu } = useContextMenu();
   if (!startOpen) return null;
   return (
     <>
@@ -26,8 +28,21 @@ export function StartMenu() {
           {APP_REGISTRY.map((app) => (
             <button
               key={app.id}
-              onDoubleClick={() => openApp(app.id)}
               onClick={() => openApp(app.id)}
+              onContextMenu={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                openMenu(e, [
+                  {
+                    label: "Open",
+                    icon: <ExternalLink className="size-4" />,
+                    onSelect: () => openApp(app.id),
+                  },
+                  { separator: true },
+                  { label: "Pin to Start", icon: <Pin className="size-4" />, disabled: true },
+                  { label: "Uninstall", disabled: true, danger: true },
+                ]);
+              }}
               className="group flex flex-col items-center gap-2 rounded-lg p-3 hover:bg-white/10"
             >
               <div className="grid size-12 place-items-center rounded-lg bg-white/10 text-2xl transition group-hover:scale-105">
@@ -37,6 +52,7 @@ export function StartMenu() {
             </button>
           ))}
         </div>
+
 
         <div className="mt-6 flex items-center justify-between border-t border-border/60 pt-4">
           <div className="flex items-center gap-2 text-sm">
