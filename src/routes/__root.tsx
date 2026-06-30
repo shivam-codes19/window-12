@@ -77,14 +77,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "WINDOW 12" },
+      { name: "description", content: "Pixel Perfect Replica creates a visual shell replicating a Windows 12 interface." },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "WINDOW 12" },
+      { property: "og:description", content: "Pixel Perfect Replica creates a visual shell replicating a Windows 12 interface." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "WINDOW 12" },
+      { name: "twitter:description", content: "Pixel Perfect Replica creates a visual shell replicating a Windows 12 interface." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/0ae5bfc2-a1b9-4e77-9c00-5053a25d0173/id-preview-655e1646--22c6c670-b677-4de5-ba37-8c20c9eec26e.lovable.app-1782818210976.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/0ae5bfc2-a1b9-4e77-9c00-5053a25d0173/id-preview-655e1646--22c6c670-b677-4de5-ba37-8c20c9eec26e.lovable.app-1782818210976.png" },
     ],
     links: [
       {
