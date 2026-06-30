@@ -192,8 +192,10 @@ function DesktopInner() {
         })}
       </div>
 
+      <WidgetsPanel />
       <StartMenu />
       <Taskbar />
+
     </div>
   );
 }
