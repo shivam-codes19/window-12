@@ -151,6 +151,11 @@ export const useOS = create<OSState>()(
       set((s) => {
         s.startOpen = force ?? !s.startOpen;
       }),
+
+    refreshDesktop: () =>
+      set((s) => {
+        s.refreshKey += 1;
+      }),
   })),
 );
 
