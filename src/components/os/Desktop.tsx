@@ -9,13 +9,15 @@ import {
   Eye,
   ArrowUpDown,
   Info,
+  LayoutGrid,
 } from "lucide-react";
-import wallpaper from "@/assets/wallpaper.jpg";
+import { getWallpaperUrl, WALLPAPERS } from "@/lib/wallpapers";
 import { useOS, APP_REGISTRY, type AppId } from "@/store/os";
 import { Window } from "./Window";
 import { Taskbar } from "./Taskbar";
 import { StartMenu } from "./StartMenu";
 import { ContextMenuProvider, useContextMenu } from "./ContextMenu";
+import { WidgetsPanel } from "./Widgets";
 import { FileExplorer } from "@/apps/FileExplorer";
 import { Notepad } from "@/apps/Notepad";
 import { Settings } from "@/apps/Settings";
@@ -41,7 +43,17 @@ export function Desktop() {
 }
 
 function DesktopInner() {
-  const { windows, openApp, toggleStart, startOpen, refreshKey, refreshDesktop } = useOS();
+  const {
+    windows,
+    openApp,
+    toggleStart,
+    startOpen,
+    refreshKey,
+    refreshDesktop,
+    wallpaper,
+    setWallpaper,
+    toggleWidgets,
+  } = useOS();
   const { open: openMenu } = useContextMenu();
 
   useEffect(() => {
@@ -51,15 +63,20 @@ function DesktopInner() {
         e.preventDefault();
         refreshDesktop();
       }
+      // Win+W style shortcut: Alt+W toggles widgets
+      if (e.altKey && (e.key === "w" || e.key === "W")) {
+        e.preventDefault();
+        toggleWidgets();
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [startOpen, toggleStart, refreshDesktop]);
+  }, [startOpen, toggleStart, refreshDesktop, toggleWidgets]);
 
   return (
     <div
-      className="relative h-screen w-screen overflow-hidden bg-cover bg-center"
-      style={{ backgroundImage: `url(${wallpaper})` }}
+      className="relative h-screen w-screen overflow-hidden bg-cover bg-center transition-[background-image] duration-500"
+      style={{ backgroundImage: `url(${getWallpaperUrl(wallpaper)})` }}
       onContextMenu={(e) => {
         // Only fire for the desktop itself (not children that called stopPropagation)
         e.preventDefault();
@@ -90,6 +107,22 @@ function DesktopInner() {
             label: "Open in Explorer",
             icon: <ExternalLink className="size-4" />,
             onSelect: () => openApp("file-explorer"),
+          },
+          { separator: true },
+          {
+            label: "Widgets",
+            icon: <LayoutGrid className="size-4" />,
+            shortcut: "Alt+W",
+            onSelect: () => toggleWidgets(true),
+          },
+          {
+            label: "Next background",
+            icon: <ImageIcon className="size-4" />,
+            onSelect: () => {
+              const idx = WALLPAPERS.findIndex((w) => w.id === wallpaper);
+              const next = WALLPAPERS[(idx + 1) % WALLPAPERS.length];
+              setWallpaper(next.id);
+            },
           },
           { separator: true },
           {
@@ -159,8 +192,10 @@ function DesktopInner() {
         })}
       </div>
 
+      <WidgetsPanel />
       <StartMenu />
       <Taskbar />
+
     </div>
   );
 }
