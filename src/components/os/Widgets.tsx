@@ -141,82 +141,75 @@ function WidgetCard({
 export function WidgetsPanel() {
   const { widgetsOpen, toggleWidgets, enabledWidgets, toggleWidget, openApp } = useOS();
 
+  if (!widgetsOpen) return null;
+
   return (
-    <AnimatePresence>
-      {widgetsOpen && (
-        <>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40"
-            onClick={() => toggleWidgets(false)}
-          />
-          <motion.aside
-            initial={{ x: -420, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: -420, opacity: 0 }}
-            transition={{ type: "spring", damping: 24, stiffness: 240 }}
-            className="surface-acrylic fixed bottom-16 left-3 top-3 z-50 w-[400px] overflow-hidden rounded-2xl border border-white/10 shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
-              <div className="text-sm font-semibold">Widgets</div>
-              <div className="flex items-center gap-1">
-                <button
-                  onClick={() => openApp("settings")}
-                  className="grid size-8 place-items-center rounded-md hover:bg-white/10"
-                  title="Widget settings"
-                >
-                  <SettingsIcon className="size-4" />
-                </button>
-                <button
-                  onClick={() => toggleWidgets(false)}
-                  className="grid size-8 place-items-center rounded-md hover:bg-white/10"
-                  title="Close"
-                >
-                  <X className="size-4" />
-                </button>
-              </div>
-            </div>
+    <>
+      <div
+        className="fixed inset-0 z-40 animate-in fade-in"
+        onClick={() => toggleWidgets(false)}
+      />
+      <aside
+        className="surface-acrylic fixed bottom-16 left-3 top-3 z-50 w-[400px] overflow-hidden rounded-2xl border border-white/10 shadow-2xl animate-in slide-in-from-left-8 fade-in duration-200"
+        onClick={(e: React.MouseEvent) => e.stopPropagation()}
+      >
+        <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
+          <div className="text-sm font-semibold">Widgets</div>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => openApp("settings")}
+              className="grid size-8 place-items-center rounded-md hover:bg-white/10"
+              title="Widget settings"
+            >
+              <SettingsIcon className="size-4" />
+            </button>
+            <button
+              onClick={() => toggleWidgets(false)}
+              className="grid size-8 place-items-center rounded-md hover:bg-white/10"
+              title="Close"
+            >
+              <X className="size-4" />
+            </button>
+          </div>
+        </div>
 
-            <div className="grid grid-cols-2 gap-3 overflow-auto p-3"
-              style={{ maxHeight: "calc(100% - 110px)" }}>
-              {WIDGET_REGISTRY.filter((w) => enabledWidgets[w.id]).map((w) => {
-                const Comp = WIDGET_COMPONENTS[w.id];
-                return <Comp key={w.id} />;
-              })}
-              {WIDGET_REGISTRY.every((w) => !enabledWidgets[w.id]) && (
-                <div className="col-span-2 p-6 text-center text-sm text-muted-foreground">
-                  No widgets enabled. Toggle some below.
-                </div>
-              )}
+        <div
+          className="grid grid-cols-2 gap-3 overflow-auto p-3"
+          style={{ maxHeight: "calc(100% - 110px)" }}
+        >
+          {WIDGET_REGISTRY.filter((w) => enabledWidgets[w.id]).map((w) => {
+            const Comp = WIDGET_COMPONENTS[w.id];
+            return <Comp key={w.id} />;
+          })}
+          {WIDGET_REGISTRY.every((w) => !enabledWidgets[w.id]) && (
+            <div className="col-span-2 p-6 text-center text-sm text-muted-foreground">
+              No widgets enabled. Toggle some below.
             </div>
+          )}
+        </div>
 
-            <div className="border-t border-white/10 p-3">
-              <div className="mb-2 text-[11px] uppercase tracking-wider text-muted-foreground">
-                Add widgets
-              </div>
-              <div className="flex flex-wrap gap-1.5">
-                {WIDGET_REGISTRY.map((w) => (
-                  <button
-                    key={w.id}
-                    onClick={() => toggleWidget(w.id)}
-                    className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs transition ${
-                      enabledWidgets[w.id]
-                        ? "bg-primary/30 text-white"
-                        : "bg-white/5 hover:bg-white/10"
-                    }`}
-                  >
-                    <span>{w.icon}</span>
-                    {w.name}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </motion.aside>
-        </>
-      )}
-    </AnimatePresence>
+        <div className="border-t border-white/10 p-3">
+          <div className="mb-2 text-[11px] uppercase tracking-wider text-muted-foreground">
+            Add widgets
+          </div>
+          <div className="flex flex-wrap gap-1.5">
+            {WIDGET_REGISTRY.map((w) => (
+              <button
+                key={w.id}
+                onClick={() => toggleWidget(w.id)}
+                className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs transition ${
+                  enabledWidgets[w.id]
+                    ? "bg-primary/30 text-white"
+                    : "bg-white/5 hover:bg-white/10"
+                }`}
+              >
+                <span>{w.icon}</span>
+                {w.name}
+              </button>
+            ))}
+          </div>
+        </div>
+      </aside>
+    </>
   );
 }
